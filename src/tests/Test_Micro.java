@@ -17,6 +17,8 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.TargetDataLine;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+
+import flanagan.complex.Complex;
 import math.*;
 
 @SuppressWarnings("serial")
@@ -114,7 +116,7 @@ public class Test_Micro extends JFrame {
     // allowable parameter values, which are shown
     // in comments following the declarations.
     private AudioFormat getAudioFormat() {
-        float sampleRate = 44100;
+        float sampleRate = 8000;
         //8000,11025,16000,22050,44100
         int sampleSizeInBits = 8;
 
@@ -142,20 +144,30 @@ public class Test_Micro extends JFrame {
         public void run() {
             AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
             File audioFile = new File("junk.wav");
+            double sample[] = new double[8000];
+            Complex result[] = new Complex[8000];
+            FourierTransform fft = new FourierTransform();
+            
           
             try {
                 targetDataLine.open(audioFormat);
                 targetDataLine.start();
                 AudioInputStream ais = new AudioInputStream(targetDataLine);
 
-                while (!stop) {
-                    int readValue = ais.read();
-                    
-                    if (readValue != 255) {
-                        System.out.println(readValue);
-                    }
-                
+                for(int i = 0; i < 8000; i++) {
+                	sample[i] = (double) ais.read() - 127;
                 }
+                
+                fft.setData(sample);
+                fft.setDeltaT(8000);
+                fft.transform();
+                result = fft.getTransformedDataAsComplex();
+                for(int i = 300; i < 500; i++) {
+                	System.out.println("Frenquency");
+                	System.out.println(i);
+                	System.out.println(result[i].abs());
+                }
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
