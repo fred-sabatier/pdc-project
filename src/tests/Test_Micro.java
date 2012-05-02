@@ -158,15 +158,28 @@ public class Test_Micro extends JFrame {
                 	sample[i] = (double) ais.read() - 127;
                 }
                 
+                // Set Data in the Fourier Class
                 fft.setData(sample);
+                // Set Sampling Rate
                 fft.setDeltaT(8000);
+                // Apply FFT
                 fft.transform();
+                // Get Results from FFT (Complex values)
                 result = fft.getTransformedDataAsComplex();
-                for(int i = 300; i < 500; i++) {
-                	System.out.println("Frenquency");
-                	System.out.println(i);
-                	System.out.println(result[i].abs());
+                int pos = 0;
+                double max = 0;
+                // Only until 4000 because we need only the positive values!
+                for(int i = 0; i < 4000; i++) {
+                	if (max < result[i].abs()) {
+                		// Frequency
+                		pos = i;
+                		// Amplitude
+                		max = result[i].abs(); 		
+                	}
                 }
+                
+                System.out.println(pos); // Print frequency with highest amplitude
+            	System.out.println(max); // Print value of highest amplitude
                 
             } catch (Exception e) {
                 e.printStackTrace();

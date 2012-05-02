@@ -16,7 +16,7 @@ public class Main {
         while(true) {
 	        try{
 				sound.setFrequency(440);
-				Thread.sleep(500);
+				Thread.sleep(8000);
 			} catch (InterruptedException e) {
 	            e.printStackTrace();
 	        }
