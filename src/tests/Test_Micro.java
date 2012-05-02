@@ -17,6 +17,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.TargetDataLine;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import math.*;
 
 @SuppressWarnings("serial")
 public class Test_Micro extends JFrame {
@@ -96,6 +97,9 @@ public class Test_Micro extends JFrame {
             // Stop button is clicked.  This method
             // will return after starting the thread.
             CaptureThread ct = new CaptureThread();
+            // CaptureThread as Callable and use another thread to
+            // calculate the FFT?
+           
             ct.start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +142,7 @@ public class Test_Micro extends JFrame {
         public void run() {
             AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
             File audioFile = new File("junk.wav");
-
+          
             try {
                 targetDataLine.open(audioFormat);
                 targetDataLine.start();
@@ -146,11 +150,42 @@ public class Test_Micro extends JFrame {
 
                 while (!stop) {
                     int readValue = ais.read();
-
+                    
                     if (readValue != 255) {
                         System.out.println(readValue);
                     }
+                
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
+        }
+    }
+    
+    //=============================================//
+
+    // Inner class to calculate the FFT based on received data
+    class FourierThread extends Thread {
+        private boolean stop = false;
+
+        @Override
+        public void run() {
+            AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
+            File audioFile = new File("junk.wav");
+          
+            try {
+                targetDataLine.open(audioFormat);
+                targetDataLine.start();
+                AudioInputStream ais = new AudioInputStream(targetDataLine);
+
+                while (!stop) {
+                    int readValue = ais.read();
+                    
+                    if (readValue != 255) {
+                        System.out.println(readValue);
+                    }
+                
                 }
             } catch (Exception e) {
                 e.printStackTrace();

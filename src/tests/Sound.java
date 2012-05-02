@@ -31,6 +31,7 @@ public class Sound extends Thread {
         for (int i = 0; i < nSamplePerPeriod; i++) {
             soundWave[i] =
                 (byte) (127 * Math.sin(i * 2 * Math.PI / nSamplePerPeriod));
+            System.out.println((int) soundWave[i]);
         }
 
         line.flush(); // Remove all previous data on the line
