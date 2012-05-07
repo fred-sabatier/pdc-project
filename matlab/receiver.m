@@ -9,7 +9,7 @@
 
 
 RATE = 8000;
-LENGTH = 11; % Number of bits
+LENGTH = 13; % Number of bits
 BITS_PER_SEC = 10;
 
 % Recording
@@ -26,7 +26,7 @@ disp('End of Recording.');
 rec = getaudiodata(recObj);
 
 % Plot the waveform.
-% plot(rec);
+plot(rec);
 
 % Find the starting point
 synchroSignal = createSynchroSignal(RATE);
@@ -40,5 +40,7 @@ rec = rec(startingPos: endingPos);
 plot(rec);
 
 m = getMessage(rec, RATE, BITS_PER_SEC, LENGTH);
+
+output = writeMessage(m)
 
 stem(m);
