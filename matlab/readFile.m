@@ -4,7 +4,7 @@ function [bitstream] = readFile(filename)
 fileID = fopen(filename);
 
 % read data into array
-data = fscanf(fid,'%s');
+data = fscanf(fileID,'%s');
 
 % convert data to bytes
 bytes = unicode2native(data);
@@ -13,6 +13,6 @@ bytes = unicode2native(data);
 bitstr = dec2bin(bytes,8);
 
 % create array out of the 8 bit sequences
-bitstream = str2num(reshape(bstr',[],1))';
+bitstream = str2num(reshape(bitstr',[],1))';
 
 
