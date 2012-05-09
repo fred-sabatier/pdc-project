@@ -1,4 +1,4 @@
-function [ascii_message] = writeMessage(message)
+function [ascii_message] = convertMessageToAscii(message)
 
 MESSAGE_LENGTH = length(message) / 8;
 int_message = zeros(1,MESSAGE_LENGTH);

@@ -4,7 +4,8 @@ function [bitstream] = readFile(filename)
 fileID = fopen(filename);
 
 % read data into array
-data = fscanf(fileID,'%s');
+% %c instead of %s allows to capture white space and line return
+data = fscanf(fileID,'%c');
 
 % convert data to bytes
 bytes = unicode2native(data);

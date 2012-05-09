@@ -6,8 +6,8 @@ function [signal] = createSynchroSignal(RATE)
 
 nRepet = 2;
 
-s1 = createSound(0.5, 440, RATE);
-s2 = createSound(0.5, 0, RATE); 
+s1 = createSoundSignal(0.5, 440, RATE);
+s2 = createSoundSignal(0.5, 0, RATE); 
 s = [s1 s2];
 
 signal = zeros(1, nRepet*RATE); % Preallocation
