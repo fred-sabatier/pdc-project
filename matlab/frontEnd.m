@@ -35,5 +35,25 @@ startingPos = synchroPos + length(synchroSignal);
 endingPos = startingPos + RATE * LENGTH / BITS_PER_SEC;
 rec = rec(startingPos: endingPos);
 
-% Transforms the signal into a bit sequence
-encodedMessage = extractMessageFromSignal(rec, RATE, BITS_PER_SEC, LENGTH);
+% Transforms the signal into a real valued sequence
+observable = extractObservableFromSignal(rec, RATE, BITS_PER_SEC, LENGTH);
+
+% Transforms the latter in a bit sequence
+% TODO maybe it should go in the decoder
+
+% How to choose threshold? At synchro?
+% THRESHOLD = 0.01; % For energy
+
+THRESHOLD = 3; % For xcorr
+disp('Threshold is set at 3... ajust your sound or the threshold');
+stem(observable);
+
+
+encodedMessage = zeros(1, LENGTH);
+for i = 1:LENGTH
+    if(observable(i) > THRESHOLD)
+        encodedMessage(i) = 1;
+    else
+        encodedMessage(i) = 0;
+    end
+end

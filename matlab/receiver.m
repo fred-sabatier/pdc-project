@@ -13,4 +13,4 @@ output = convertMessageToAscii(m);
 disp('Decoded message: ');
 disp(output);
 
-stem(m);
+% stem(m);
