@@ -7,7 +7,10 @@
 function [encodedMessage] = frontEnd
 
 % TODO Modify number of bits accoring to file length and encoding
-LENGTH = 24; 
+TWO_COMPUTERS = 0;
+
+N_CHAR = 14;
+LENGTH = 8 * N_CHAR; 
 
 RATE = 8000;
 BITS_PER_SEC = 8;
@@ -16,10 +19,13 @@ BITS_PER_SEC = 8;
 % Recording
 recObj = audiorecorder(RATE, 8, 1);
 disp('Start recoring')
-
-record(recObj) % recordblocking(r, 4);
-transmitter; % run transmitter (when using only one computer)
-stop(recObj)
+if(TWO_COMPUTERS)
+    recordblocking(recObj, LENGTH / BITS_PER_SEC + 2 + 2);
+else 
+    record(recObj) % 
+    transmitter; % run transmitter (when using only one computer)
+    stop(recObj)
+end
 
 disp('End of Recording.');
 
@@ -33,6 +39,9 @@ synchroPos = findPatternPos(rec, synchroSignal);
 % Extracts the interesting part
 startingPos = synchroPos + length(synchroSignal);
 endingPos = startingPos + RATE * LENGTH / BITS_PER_SEC;
+disp(startingPos)
+disp(endingPos)
+disp(length(rec))
 rec = rec(startingPos: endingPos);
 
 % Transforms the signal into a real valued sequence
@@ -44,8 +53,12 @@ observable = extractObservableFromSignal(rec, RATE, BITS_PER_SEC, LENGTH);
 % How to choose threshold? At synchro?
 % THRESHOLD = 0.01; % For energy
 
-THRESHOLD = 3; % For xcorr
+THRESHOLD = 10; % For xcorr
 disp('Threshold is set at 3... ajust your sound or the threshold');
+
+subplot(2, 1, 1);
+plot(rec);
+subplot(2, 1, 2);
 stem(observable);
 
 
