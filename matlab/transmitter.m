@@ -7,4 +7,4 @@ encodedMessage = encodeMessage(message);
  
 %  message = [1 0 1 1 1 0 1 0 1 1 1 0 1]; % TODO load from file
 
-waveformGenerator(encodedMessage)
+waveformGenerator(message)
