@@ -9,7 +9,7 @@ function [encodedMessage] = frontEnd
 % TODO Modify number of bits accoring to file length and encoding
 TWO_COMPUTERS = 0;
 
-N_CHAR = 14;
+N_CHAR = 15;
 LENGTH = 8 * N_CHAR; 
 
 RATE = 8000;
@@ -42,6 +42,7 @@ endingPos = startingPos + RATE * LENGTH / BITS_PER_SEC;
 disp(startingPos)
 disp(endingPos)
 disp(length(rec))
+syncSig = rec(synchroPos : startingPos);
 rec = rec(startingPos: endingPos);
 
 % Transforms the signal into a real valued sequence
@@ -50,10 +51,9 @@ observable = extractObservableFromSignal(rec, RATE, BITS_PER_SEC, LENGTH);
 % Transforms the latter in a bit sequence
 % TODO maybe it should go in the decoder
 
-% How to choose threshold? At synchro?
-% THRESHOLD = 0.01; % For energy
+% Calculate mean energy of synchro signal and define TRESHOLD
 
-THRESHOLD = 10; % For xcorr
+THRESHOLD = getOptimalTreshold(syncSig, RATE);
 disp('Threshold is set at 3... ajust your sound or the threshold');
 
 subplot(2, 1, 1);
