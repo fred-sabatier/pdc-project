@@ -4,13 +4,14 @@ function [signal] = createSynchroSignal(RATE)
 % TODO (later) find sequence which is not present in usual
 % message (eg use other frequencies)
 
-nRepet = 2;
+nRepet = 8;
 
-s1 = createSoundSignal(0.5, 440, RATE);
-s2 = createSoundSignal(0.5, 0, RATE); 
+s1 = createSoundSignal(1/nRepet, 440, RATE);
+s2 = createSoundSignal(1/nRepet, 0, RATE); 
 s = [s1 s2];
 
-signal = zeros(1, nRepet*RATE); % Preallocation
+signal = zeros(1, 2*RATE); % Preallocation
 for i = 0:nRepet-1
-    signal(i*RATE+1:(i+1)*RATE) = s;
+    disp(s)
+    signal(i*RATE*2/nRepet+1:(i+1)*RATE*2/nRepet) = s;
 end
