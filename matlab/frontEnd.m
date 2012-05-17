@@ -5,66 +5,66 @@
 % This can be considered as a black box from outside.
 
 function [encodedMessage] = frontEnd
+LENGTH = Constants.FILE_LENGTH; 
+RATE = Constants.RATE;
+BPS = Constants.BPS;
 
-% TODO Modify number of bits accoring to file length and encoding
-TWO_COMPUTERS = 0;
-
-N_CHAR = 15;
-LENGTH = 8 * N_CHAR; 
-
-RATE = 8000;
-BITS_PER_SEC = 8;
-
+INIT_DURATION = Constants.INIT_DURATION;
+SAFETY_DURATION = Constants.SAFETY_DURATION;
 
 % Recording
 recObj = audiorecorder(RATE, 8, 1);
 disp('Start recoring')
-if(TWO_COMPUTERS)
-    recordblocking(recObj, LENGTH / BITS_PER_SEC + 2 + 2);
+if(Constants.TWO_COMPUTERS)
+    RECORDING_DURATION = INIT_DURATION + LENGTH/BPS + SAFETY_DURATION;
+    recordblocking(recObj, RECORDING_DURATION);
 else 
     record(recObj) % 
     transmitter; % run transmitter (when using only one computer)
     stop(recObj)
 end
-
 disp('End of Recording.');
 
 % Store data in double-precision array.
-rec = getaudiodata(recObj);
+signal = getaudiodata(recObj);
 
 % Find the starting point
-synchroSignal = createSynchroSignal(RATE);
-synchroPos = findPatternPos(rec, synchroSignal); 
+synchroSignal = createSynchroSignal();
+synchroPos = findPatternPos(signal, synchroSignal); 
 
 % Extracts the interesting part
-startingPos = synchroPos + length(synchroSignal);
-endingPos = startingPos + RATE * LENGTH / BITS_PER_SEC;
-disp(startingPos)
-disp(endingPos)
-disp(length(rec))
-syncSig = rec(synchroPos : startingPos);
-rec = rec(startingPos: endingPos);
+thresholdPos = synchroPos + RATE * Constants.SYNCHRO_DURATION;
+startingPos = synchroPos + RATE * INIT_DURATION;
+endingPos = startingPos + RATE * LENGTH / BPS - 1;
+fprintf('Record length: %d, Start: %d, End: %d\n', ...
+    length(signal), startingPos, endingPos);
+
+thresholdSignal = signal(thresholdPos : startingPos - 1);
+messageSignal = signal(startingPos: endingPos);
+
+% Extract optimal threshold
+
+threshold = getOptimalTreshold(thresholdSignal);
+fprintf('Optimal threshold: %d \n', threshold);
 
 % Transforms the signal into a real valued sequence
-observable = extractObservableFromSignal(rec, RATE, BITS_PER_SEC, LENGTH);
+observable = extractObservableFromSignal(messageSignal);
 
 % Transforms the latter in a bit sequence
 % TODO maybe it should go in the decoder
 
 % Calculate mean energy of synchro signal and define TRESHOLD
 
-THRESHOLD = getOptimalTreshold(syncSig, RATE);
-disp('Threshold is set at 3... ajust your sound or the threshold');
 
 subplot(2, 1, 1);
-plot(rec);
+plot(signal);
 subplot(2, 1, 2);
 stem(observable);
 
 
 encodedMessage = zeros(1, LENGTH);
 for i = 1:LENGTH
-    if(observable(i) > THRESHOLD)
+    if(observable(i) > threshold)
         encodedMessage(i) = 1;
     else
         encodedMessage(i) = 0;

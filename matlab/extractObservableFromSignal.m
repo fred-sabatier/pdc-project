@@ -1,7 +1,10 @@
-function [observable] = extractObservableFromSignal(signal, RATE, BIT_PER_SEC, LENGTH)
-    SAMPLE_PER_BIT = RATE / BIT_PER_SEC;
+function [observable] = extractObservableFromSignal(signal)
+    LENGTH = Constants.FILE_LENGTH;
+    RATE = Constants.RATE;
+    BPS = Constants.BPS;
+    SAMPLE_PER_BIT = RATE / BPS;
     
-    soundSignal = createSoundSignal(1/BIT_PER_SEC, 880, RATE);
+    soundSignal = createSoundSignal(1/BPS, Constants.FREQUENCY);
 
     observable = zeros(1, LENGTH);
     for i = 1:LENGTH

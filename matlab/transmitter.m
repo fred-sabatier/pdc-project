@@ -1,10 +1,9 @@
 % Implements the transmitter
 
-% Length IN RECEIVER must correspond to the size of message in bits
 message = readFile('file.txt');
 
-encodedMessage = encodeMessage(message);
- 
-%  message = [1 0 1 1 1 0 1 0 1 1 1 0 1]; % TODO load from file
+% encodedMessage = encodeMessage(message);
 
-waveformGenerator(message)
+signal = waveformGenerator(message); 
+
+sound(signal, Constants.RATE); % Important to precise the rate, otherwise 8192

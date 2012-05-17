@@ -1,10 +1,12 @@
-function [signal] = createMessageSignal(message, RATE, BIT_PER_SEC)
+function [signal] = createMessageSignal(message)
+RATE = Constants.RATE;
+BPS = Constants.BPS;
 
-signal0 = createSoundSignal(1/BIT_PER_SEC, 0, RATE);
-signal1 = createSoundSignal(1/BIT_PER_SEC, 880, RATE);
+signal0 = createSoundSignal(1/BPS, 0);
+signal1 = createSoundSignal(1/BPS, Constants.FREQUENCY);
 
 nBits = length(message);
-nSamplePerBit = RATE / BIT_PER_SEC;
+nSamplePerBit = RATE / BPS;
 
 signal = zeros(1, nBits * nSamplePerBit);
 

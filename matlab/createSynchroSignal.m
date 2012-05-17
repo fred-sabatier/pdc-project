@@ -1,17 +1,25 @@
-function [signal] = createSynchroSignal(RATE)
-% Play two sounds 0.5 seconds, nRepet times
+function [signal] = createSynchroSignal()
+% Play two sounds  nRepet times
 
 % TODO (later) find sequence which is not present in usual
 % message (eg use other frequencies)
 
-nRepet = 8;
+DURATION = Constants.SYNCHRO_DURATION;
+nCroches = 16;
+crocheDuration = DURATION/nCroches;
+noireDuration = 2 * crocheDuration;
 
-s1 = createSoundSignal(1/nRepet, 440, RATE);
-s2 = createSoundSignal(1/nRepet, 0, RATE); 
-s = [s1 s2];
+silence = createSoundSignal(crocheDuration, 0);
+silenceLong = createSoundSignal(noireDuration, 0);
+solLong = createSoundSignal(noireDuration, 396);
+do = createSoundSignal(crocheDuration, 528);
+mi = createSoundSignal(crocheDuration, 660);
+miLong = createSoundSignal(noireDuration, 660);
+sol2Long = createSoundSignal(noireDuration, 792);
 
-signal = zeros(1, 2*RATE); % Preallocation
-for i = 0:nRepet-1
-    disp(s)
-    signal(i*RATE*2/nRepet+1:(i+1)*RATE*2/nRepet) = s;
-end
+% signal = [do, silence, mi, silence, do, silence, mi, silence, ...
+%     do, silence, mi, silence, do, silence, mi, silence];
+
+% Just for fun
+ signal = [mi, mi, silence, mi, silence, do, miLong, ...
+     sol2Long, silenceLong, solLong, silenceLong];
