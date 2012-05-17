@@ -17,9 +17,9 @@ mi = createSoundSignal(crocheDuration, 660);
 miLong = createSoundSignal(noireDuration, 660);
 sol2Long = createSoundSignal(noireDuration, 792);
 
-% signal = [do, silence, mi, silence, do, silence, mi, silence, ...
-%     do, silence, mi, silence, do, silence, mi, silence];
+signal = [do, silence, mi, silence, do, silence, mi, silence, ...
+    do, silence, mi, silence, do, silence, mi, silence];
 
 % Just for fun
- signal = [mi, mi, silence, mi, silence, do, miLong, ...
-     sol2Long, silenceLong, solLong, silenceLong];
+%  signal = [mi, mi, silence, mi, silence, do, miLong, ...
+%      sol2Long, silenceLong, solLong, silenceLong];

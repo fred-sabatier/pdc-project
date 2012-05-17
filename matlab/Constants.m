@@ -13,6 +13,6 @@ classdef Constants
         N_CHAR = 16;
         FILE_LENGTH = 8 * Constants.N_CHAR; % File lenght in bits
         
-        TWO_COMPUTERS = 1;
+        TWO_COMPUTERS = 0;
     end
 end
