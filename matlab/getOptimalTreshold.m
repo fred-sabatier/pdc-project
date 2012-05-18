@@ -2,7 +2,7 @@ function threshold = getOptimalTreshold(signal)
     BPS = Constants.BPS;
     SAMPLE_PER_BIT = 1/BPS * Constants.RATE;
     
-    soundSignal = createSoundSignal(1/BPS, 440);
+    soundSignal = createSoundSignal(1/BPS, Constants.FREQUENCY);
 
     observable = zeros(1, 8);
     for i = 1:8
