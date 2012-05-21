@@ -7,6 +7,7 @@
 function [encodedMessage] = frontEnd
 LENGTH = Constants.FILE_LENGTH; 
 RATE = Constants.RATE;
+SPS = Constants.SPS;
 BPS = Constants.BPS;
 
 INIT_DURATION = Constants.INIT_DURATION;
@@ -44,11 +45,15 @@ messageSignal = signal(startingPos: endingPos);
 
 % Extract optimal threshold
 
-threshold = getOptimalTreshold(thresholdSignal);
-fprintf('Optimal threshold: %d \n', threshold);
+%threshold = getOptimalTreshold(thresholdSignal);
+%fprintf('Optimal threshold: %d \n', threshold);
 
 % Transforms the signal into a real valued sequence
-observable = extractObservableFromSignal(messageSignal);
+[observable, indice] = extractObservableFromSignal(messageSignal);
+
+for i = 1:length(indice)
+    disp(indice(i)-1);
+end
 
 % Transforms the latter in a bit sequence
 % TODO maybe it should go in the decoder
@@ -63,10 +68,20 @@ stem(observable);
 
 
 encodedMessage = zeros(1, LENGTH);
-for i = 1:LENGTH
-    if(observable(i) > threshold)
-        encodedMessage(i) = 1;
-    else
-        encodedMessage(i) = 0;
+for i = 1:LENGTH/2
+    l = 2*i-1;
+    switch indice(i)-1
+        case 0
+            encodedMessage(l) = 0;
+            encodedMessage(l+1) = 0;
+        case 1
+            encodedMessage(l) = 0;
+            encodedMessage(l+1) = 1;
+        case 2
+            encodedMessage(l) = 1;
+            encodedMessage(l+1) = 0;
+        case 3
+            encodedMessage(l) = 1;
+            encodedMessage(l+1) = 1;
     end
 end

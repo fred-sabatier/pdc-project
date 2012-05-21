@@ -2,6 +2,8 @@ classdef Constants
     properties(Constant)
         RATE = 8000;
         BPS = 16; % Bits per second
+        SPS = 8; % Symbols per second
+        
         
         FREQUENCY = 440; % Frequency used to send bits 1
         FREQUENCY_440 = 440;

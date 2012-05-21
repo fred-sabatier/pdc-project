@@ -1,25 +1,26 @@
-function [observable] = extractObservableFromSignal(signal)
-    LENGTH = Constants.FILE_LENGTH;
+function [observable, indice] = extractObservableFromSignal(signal)
+    LENGTH = Constants.FILE_LENGTH/2;
     RATE = Constants.RATE;
-    BPS = Constants.BPS;
-    SAMPLE_PER_BIT = RATE / BPS;
+    SPS = Constants.SPS;
+    SAMPLE_PER_SYMBOL = RATE / SPS;
     
-    soundSignal_440 = createSoundSignal(1/BPS, Constants.FREQUENCY_440);
-    soundSignal_500 = createSoundSignal(1/BPS, Constants.FREQUENCY_500);
-    soundSignal_600 = createSoundSignal(1/BPS, Constants.FREQUENCY_600);
-    soundSignal_700 = createSoundSignal(1/BPS, Constants.FREQUENCY_700);
+    soundSignal0 = createSoundSignal(1/SPS, 400);
+    soundSignal1 = createSoundSignal(1/SPS, 450);
+    soundSignal2 = createSoundSignal(1/SPS, 500);
+    soundSignal3 = createSoundSignal(1/SPS, 550);
 
     observable = zeros(1, LENGTH);
+    indice = zeros(1, LENGTH);
     intermediate_obs = zeros(1, 4);
     for i = 1:LENGTH
-        signalPart = signal((i-1)*SAMPLE_PER_BIT + 1: i*SAMPLE_PER_BIT);
+        signalPart = signal((i-1)*SAMPLE_PER_SYMBOL + 1: i*SAMPLE_PER_SYMBOL);
        
         % Two methods to get an observable...
 %         observable(i) = mean(signalPart.*signalPart);
-        intermediate_obs(1) =  max(xcorr(signalPart, soundSignal_440));
-        intermediate_obs(2) =  max(xcorr(signalPart, soundSignal_500));
-        intermediate_obs(3) =  max(xcorr(signalPart, soundSignal_600));
-        intermediate_obs(4) =  max(xcorr(signalPart, soundSignal_700));
-        observable(i) = max(intermediate_obs);
+        intermediate_obs(1) =  max(xcorr(signalPart, soundSignal0));
+        intermediate_obs(2) =  max(xcorr(signalPart, soundSignal1));
+        intermediate_obs(3) =  max(xcorr(signalPart, soundSignal2));
+        intermediate_obs(4) =  max(xcorr(signalPart, soundSignal3));
+        [observable(i), indice(i)] = max(intermediate_obs);
     end
 end

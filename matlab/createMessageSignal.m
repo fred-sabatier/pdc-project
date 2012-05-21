@@ -1,36 +1,36 @@
 function [signal] = createMessageSignal(message)
 RATE = Constants.RATE;
+SPS = Constants.SPS;
 BPS = Constants.BPS;
-nSamplePerBit = RATE / BPS;
+nSamplePerSymbol = RATE / SPS;
 
-signal0 = createSoundSignal(1/BPS, 0);
-signal1 = zeros(1, 4*nSamplePerBit);
-signal1(1:1*nSamplePerBit) = createSoundSignal(1/BPS, Constants.FREQUENCY_440);
-signal1(1*nSamplePerBit+1:2*nSamplePerBit) = createSoundSignal(1/BPS, Constants.FREQUENCY_500);
-signal1(2*nSamplePerBit+1:3*nSamplePerBit) = createSoundSignal(1/BPS, Constants.FREQUENCY_600);
-signal1(3*nSamplePerBit+1:4*nSamplePerBit) = createSoundSignal(1/BPS, Constants.FREQUENCY_700);
+signal0 = zeros(1, nSamplePerSymbol);
+signal1 = zeros(1, nSamplePerSymbol);
+signal2 = zeros(1, nSamplePerSymbol);
+signal3 = zeros(1, nSamplePerSymbol);
+signal0 = createSoundSignal(1/SPS, 400);
+signal1 = createSoundSignal(1/SPS, 450);
+signal2 = createSoundSignal(1/SPS, 500);
+signal3 = createSoundSignal(1/SPS, 550);
 
 nBits = length(message);
 
+signal = zeros(1, nBits*SPS/BPS * nSamplePerSymbol);
 
-signal = zeros(1, nBits * nSamplePerBit);
-
-for i = 1:nBits
-    % Set the signal part to signal0 or signal1
-    if(message(i) == 0)
-        signal((i-1)*nSamplePerBit + 1: i*nSamplePerBit) = signal0;
+for i = 1:2:nBits
+    % Set the signal part to signal0, signal1, signal2 or signal3
+    
+    l = (i-1)/2;
+    
+    if(message(i) == 0 && message(i+1) == 0)
+        signal(l*nSamplePerSymbol+1:(l+1)*nSamplePerSymbol) = signal0;
+    elseif(message(i) == 0 && message(i+1) == 1)
+        signal(l*nSamplePerSymbol+1:(l+1)*nSamplePerSymbol) = signal1;
+    elseif(message(i) == 1 && message(i+1) == 0)
+        signal(l*nSamplePerSymbol+1:(l+1)*nSamplePerSymbol) = signal2;
     else
-        switch(mod(i,4))
-            case 0
-               signal((i-1)*nSamplePerBit + 1: i*nSamplePerBit) = signal1(1:1*nSamplePerBit);
-            case 1
-               signal((i-1)*nSamplePerBit + 1: i*nSamplePerBit) = signal1(1*nSamplePerBit+1:2*nSamplePerBit);
-            case 2
-               signal((i-1)*nSamplePerBit + 1: i*nSamplePerBit) = signal1(2*nSamplePerBit+1:3*nSamplePerBit);
-            case 3
-               signal((i-1)*nSamplePerBit + 1: i*nSamplePerBit) = signal1(3*nSamplePerBit+1:4*nSamplePerBit);
-        end
+        signal(l*nSamplePerSymbol+1:(l+1)*nSamplePerSymbol) = signal3;
     end
 end
 
-% plot(signal);
+plot(signal);
