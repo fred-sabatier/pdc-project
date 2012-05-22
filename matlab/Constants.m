@@ -12,7 +12,7 @@ classdef Constants
         FREQUENCY_700 = 700; % Frequency used to send bits 1
         
         SYNCHRO_DURATION = 2;
-        THRESHOLD_DURATION = 8 / Constants.BPS; % DO NOT MODIFY
+        THRESHOLD_DURATION = 8 / Constants.SPS; % DO NOT MODIFY... unless needed ;)
         INIT_DURATION = Constants.SYNCHRO_DURATION + Constants.THRESHOLD_DURATION;
         SAFETY_DURATION = 5; % Records a little longer...
         
