@@ -1,15 +1,14 @@
 classdef Constants
     properties(Constant)
         RATE = 8000;
-        BPS = 16; % Bits per second
+        NBR_SYMBOLS = 16;
+        BPS = 32; % Bits per second
         SPS = 8; % Symbols per second
+        FREQUENCY_INTERVAL = 50;
+        FREQUENCY_START = 200;
+        THRESH_FREQUENCY = 440;
         
-        
-        FREQUENCY = 440; % Frequency used to send bits 1
-        FREQUENCY_440 = 440;
-        FREQUENCY_500 = 500; % Frequency used to send bits 1
-        FREQUENCY_600 = 600; % Frequency used to send bits 1
-        FREQUENCY_700 = 700; % Frequency used to send bits 1
+        FREQUENCY = (Constants.FREQUENCY_START:Constants.FREQUENCY_INTERVAL:Constants.FREQUENCY_START+(Constants.NBR_SYMBOLS-1)*Constants.FREQUENCY_INTERVAL)
         
         SYNCHRO_DURATION = 2;
         THRESHOLD_DURATION = 8 / Constants.SPS; % DO NOT MODIFY... unless needed ;)

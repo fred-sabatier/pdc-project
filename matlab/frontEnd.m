@@ -9,6 +9,7 @@ LENGTH = Constants.FILE_LENGTH;
 RATE = Constants.RATE;
 SPS = Constants.SPS;
 BPS = Constants.BPS;
+NBR_SYMBOLS = Constants.NBR_SYMBOLS;
 
 INIT_DURATION = Constants.INIT_DURATION;
 SAFETY_DURATION = Constants.SAFETY_DURATION;
@@ -68,20 +69,89 @@ stem(observable);
 
 
 encodedMessage = zeros(1, LENGTH);
-for i = 1:LENGTH/2
-    l = 2*i-1;
+for i = 1:LENGTH/4
+    l = 4*i-3;
+    disp(indice(i)-1);
     switch indice(i)-1
         case 0
-            encodedMessage(l) = 0;
+            encodedMessage(l+3) = 0;
+            encodedMessage(l+2) = 0;
             encodedMessage(l+1) = 0;
+            encodedMessage(l) = 0;
         case 1
-            encodedMessage(l) = 0;
-            encodedMessage(l+1) = 1;
-        case 2
-            encodedMessage(l) = 1;
+            encodedMessage(l+3) = 1;
+            encodedMessage(l+2) = 0;
             encodedMessage(l+1) = 0;
+            encodedMessage(l) = 0;
+        case 2
+            encodedMessage(l+3) = 0;
+            encodedMessage(l+2) = 1;
+            encodedMessage(l+1) = 0;
+            encodedMessage(l) = 0;
         case 3
-            encodedMessage(l) = 1;
+            encodedMessage(l+3) = 1;
+            encodedMessage(l+2) = 1;
+            encodedMessage(l+1) = 0;
+            encodedMessage(l) = 0;
+        case 4
+            encodedMessage(l+3) = 0;
+            encodedMessage(l+2) = 0;
             encodedMessage(l+1) = 1;
+            encodedMessage(l) = 0;
+        case 5
+            encodedMessage(l+3) = 1;
+            encodedMessage(l+2) = 0;
+            encodedMessage(l+1) = 1;
+            encodedMessage(l) = 0;
+        case 6
+            encodedMessage(l+3) = 0;
+            encodedMessage(l+2) = 1;
+            encodedMessage(l+1) = 1;
+            encodedMessage(l) = 0;
+        case 7
+            encodedMessage(l+3) = 1;
+            encodedMessage(l+2) = 1;
+            encodedMessage(l+1) = 1;
+            encodedMessage(l) = 0;
+        case 8
+            encodedMessage(l+3) = 0;
+            encodedMessage(l+2) = 0;
+            encodedMessage(l+1) = 0;
+            encodedMessage(l) = 1;
+        case 9
+            encodedMessage(l+3) = 1;
+            encodedMessage(l+2) = 0;
+            encodedMessage(l+1) = 0;
+            encodedMessage(l) = 1;
+        case 10
+            encodedMessage(l+3) = 0;
+            encodedMessage(l+2) = 1;
+            encodedMessage(l+1) = 0;
+            encodedMessage(l) = 1;
+        case 11
+            encodedMessage(l+3) = 1;
+            encodedMessage(l+2) = 1;
+            encodedMessage(l+1) = 0;
+            encodedMessage(l) = 1;
+        case 12
+            encodedMessage(l+3) = 0;
+            encodedMessage(l+2) = 0;
+            encodedMessage(l+1) = 1;
+            encodedMessage(l) = 1;
+        case 13
+            encodedMessage(l+3) = 1;
+            encodedMessage(l+2) = 0;
+            encodedMessage(l+1) = 1;
+            encodedMessage(l) = 1;
+        case 14
+            encodedMessage(l+3) = 0;
+            encodedMessage(l+2) = 1;
+            encodedMessage(l+1) = 1;
+            encodedMessage(l) = 1;
+        case 15
+            encodedMessage(l+3) = 1;
+            encodedMessage(l+2) = 1;
+            encodedMessage(l+1) = 1;
+            encodedMessage(l) = 1;
     end
 end
