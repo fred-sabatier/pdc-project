@@ -2,8 +2,8 @@ function [signal] = createMessageSignal(message)
 RATE = Constants.RATE;
 BPS = Constants.BPS;
 
-signal0 = createSoundSignal(1/BPS, 0);
-signal1 = createSoundSignal(1/BPS, Constants.FREQUENCY);
+signal0 = createSoundSignal(1/BPS, Constants.FREQUENCY_0);
+signal1 = createSoundSignal(1/BPS, Constants.FREQUENCY_1);
 
 nBits = length(message);
 nSamplePerBit = RATE / BPS;

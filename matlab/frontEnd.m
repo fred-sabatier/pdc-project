@@ -39,34 +39,8 @@ endingPos = startingPos + RATE * LENGTH / BPS - 1;
 fprintf('Record length: %d, Start: %d, End: %d\n', ...
     length(signal), startingPos, endingPos);
 
-thresholdSignal = signal(thresholdPos : startingPos - 1);
 messageSignal = signal(startingPos: endingPos);
 
-% Extract optimal threshold
-
-threshold = getOptimalTreshold(thresholdSignal);
-fprintf('Optimal threshold: %d \n', threshold);
 
 % Transforms the signal into a real valued sequence
-observable = extractObservableFromSignal(messageSignal);
-
-% Transforms the latter in a bit sequence
-% TODO maybe it should go in the decoder
-
-% Calculate mean energy of synchro signal and define TRESHOLD
-
-
-subplot(2, 1, 1);
-plot(signal);
-subplot(2, 1, 2);
-stem(observable);
-
-
-encodedMessage = zeros(1, LENGTH);
-for i = 1:LENGTH
-    if(observable(i) > threshold)
-        encodedMessage(i) = 1;
-    else
-        encodedMessage(i) = 0;
-    end
-end
+encodedMessage = extractObservableFromSignal(messageSignal);
